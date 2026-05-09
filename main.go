@@ -133,4 +133,103 @@ func main() {
 		fmt.Println(c)
 	}
 	fmt.Println(c)
+
+	m := map[string]int{"apple": 100, "banana": 200}
+	fmt.Println(m)
+	fmt.Println(m["apple"])
+	m["banana"] = 300
+	m["new"] = 500
+	fmt.Println(m)
+
+	v, ok := m["apple"]
+	fmt.Printf("Value: %d, Exists: %t\n", v, ok)
+
+	v2, ok2 := m["notthing"]
+	fmt.Printf("Value: %d, Exists: %t\n", v2, ok2)
+
+	m2 := make(map[string]int)
+	m2["pc"] = 5000
+	fmt.Println(m2)
+
+	bytes := []byte{72,73}
+	fmt.Println(bytes)
+	fmt.Println(string(bytes))
+
+	result1, result2 := add(10, 20)
+	fmt.Println(result1, result2)
+
+	result3 := cal(100, 2)
+	fmt.Println(result3)
+
+	fff := func() {
+		fmt.Println("This is an anonymous function.")
+	}
+	fff()
+
+	func(x int) {
+		fmt.Println("This is an anonymous function.", x)
+	}(1)
+
+	counter := incrementGenerator()
+	fmt.Println(counter())
+	fmt.Println(counter())
+	fmt.Println(counter())
+
+	cc1 := circleArea(3.14)
+	fmt.Println(cc1(2))
+
+	cc2 := circleArea(3)
+	fmt.Println(cc2(2))
+
+	foofoo()
+	foofoo(1, 2)
+	foofoo(1, 2, 3)
+
+	s10 := []int{1, 2, 3}
+
+	// 展開する
+	foofoo(s10...)
+
+	fff1 := 1.11
+	fmt.Println(int(fff1))
+
+	// 5,6
+
+	en := map[string]int{"Mike": 20, "Nancy": 24, "Messi": 30}
+	fmt.Printf("%T %v\n", en, en)
+}
+
+func foofoo(params ...int) {
+	fmt.Println(len(params), params)
+
+	for _, param := range params {
+		fmt.Println(param)
+	}
+}
+
+func circleArea(pi float64) func(radius float64) float64 {
+	return func(radius float64) float64 {
+		return pi * radius * radius
+	}
+}
+
+func incrementGenerator() func() int {
+	x := 0
+	return func() int {
+		x++
+		return x
+	}
+}
+
+func cal(price int, item int) (result int) {
+	result = price * item
+	return
+}
+
+func converter(price int) float64 {
+	return float64(price)
+}
+
+func add(x, y int) (int, int) {
+	return x + y, x - y
 }
