@@ -58,8 +58,28 @@ type Person struct {
 	Name string
 }
 
+type Person2 struct {
+	Name string
+	Age int
+}
+
+func (p Person2) String() string {
+	return fmt.Sprintf("My Name is %v.", p.Name)
+}
 type Dog struct {
 	Name string
+}
+
+type Vertex3 struct {
+	X, Y int
+}
+
+func (v Vertex3) Plus() int {
+	return v.X + v.Y
+}
+
+func (p Vertex3) String() string {
+	return fmt.Sprintf("X is %d! Y is %d!", p.X, p.Y)
 }
 
 func (p *Person) Say() string {
@@ -94,6 +114,22 @@ func do(i interface{}) {
 	}
 }
 
+type UserNotFound struct {
+	Username string
+}
+
+func (e *UserNotFound) Error() string {
+	return fmt.Sprintf("User '%s' not found", e.Username)
+}
+
+func myFunc() error {
+	ok := false
+	if ok {
+		return nil
+	} 
+	return &UserNotFound{Username: "mike"}
+}
+
 func main() {
 	//v := Vertex{3, 4}
 	v := New(3, 4, 5)
@@ -118,7 +154,21 @@ func main() {
 	do("hello")
 	do(true)
 
-	var i int = 10
+	//var i int = 10
 	ii := float64(10)
 	fmt.Printf("The type of ii is %T\n", ii)
+
+	mike2 := Person2{"Mike", 30}
+	fmt.Println(mike2)
+
+	e1 := &UserNotFound{"mike"}
+	e2 := &UserNotFound{"mike"}
+	fmt.Println(e1 == e2)
+	if err := myFunc(); err != nil {
+		fmt.Println(err)
+	}
+
+	vv3 := Vertex3{3, 4}
+	fmt.Println(vv3)
+	fmt.Println(vv3.Plus())
 }
