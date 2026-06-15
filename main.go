@@ -3,16 +3,19 @@ package main
 import (
 	"fmt"
 	"os/user"
-	"time"
-	"strings"
 	"strconv"
+	"strings"
+	"time"
+
+	"go-fintech/mylib"
+	"go-fintech/mylib/under"
 )
 
 var (
-	i int = 1
-	f64 float64 = 1.0
-	s string = "Go is great!"
-	t, f bool = true, false
+	i    int     = 1
+	f64  float64 = 1.0
+	s    string  = "Go is great!"
+	t, f bool    = true, false
 )
 
 func foo() {
@@ -21,7 +24,7 @@ func foo() {
 	var xf32 float32 = 2.0
 	xs := "Go is awesome!"
 	xt, xf := true, false
-	
+
 	fmt.Printf("Integer (short declaration): %d\n", xi)
 	fmt.Printf("Float64 (short declaration): %f\n", xf32)
 	fmt.Printf("String (short declaration): %s\n", xs)
@@ -72,7 +75,7 @@ func main() {
 	fmt.Printf("%T %v %f\n", xx, xx, xx)
 
 	var y float64 = 1.2
-	yy:= int(y)
+	yy := int(y)
 	fmt.Printf("%T %v %d\n", yy, yy, yy)
 
 	var ss string = "123"
@@ -82,7 +85,7 @@ func main() {
 	hh := "Hello, World!"
 	fmt.Println(string(hh[0]))
 
-	var a[2]int
+	var a [2]int
 	a[0] = 100
 	a[1] = 200
 	fmt.Println(a)
@@ -126,7 +129,7 @@ func main() {
 	fmt.Printf("len=%d cap=%d value=%v\n", len(bb), cap(bb), bb)
 	fmt.Printf("len=%d cap=%d value=%v\n", len(c), cap(c), c)
 
-	//c = make([]int, 5) 
+	//c = make([]int, 5)
 	c = make([]int, 0, 5)
 	for i := 0; i < 5; i++ {
 		c = append(c, i)
@@ -151,7 +154,7 @@ func main() {
 	m2["pc"] = 5000
 	fmt.Println(m2)
 
-	bytes := []byte{72,73}
+	bytes := []byte{72, 73}
 	fmt.Println(bytes)
 	fmt.Println(string(bytes))
 
@@ -197,6 +200,18 @@ func main() {
 
 	en := map[string]int{"Mike": 20, "Nancy": 24, "Messi": 30}
 	fmt.Printf("%T %v\n", en, en)
+
+	sss := []int{1, 2, 3, 4, 5}
+	fmt.Println(mylib.Average(sss))
+
+	mylib.Say()
+
+	under.Hello()
+
+	person := mylib.Person{Name: "Mike", Age: 30}
+	fmt.Println(person)
+
+	fmt.Println(mylib.Public)
 }
 
 func foofoo(params ...int) {
