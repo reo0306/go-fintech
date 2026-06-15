@@ -74,7 +74,7 @@ func multi4(second <-chan int, third chan<- int) {
     }
 }
 
-func goroutine4(ch chan string) {
+/*func goroutine4(ch chan string) {
     for {
         ch <- "packet from 1"
         time.Sleep(1 * time.Second)
@@ -86,6 +86,32 @@ func goroutine5(ch chan int) {
         ch <- 100
         time.Sleep(1 * time.Second)
     }
+}*/
+
+type Counter struct {
+    v map[string]int
+    mux sync.Mutex
+}
+
+func (c *Counter) Inc(key string) {
+    c.mux.Lock()
+    defer c.mux.Unlock()
+    c.v[key]++
+}
+
+func (c *Counter) Value(key string) int {
+    c.mux.Lock()
+    defer c.mux.Unlock()
+    return c.v[key]
+}
+
+func goroutine10(words []string, c chan string) {
+    sum := ""
+    for _, v := range words {
+        sum += v
+        c <- sum
+    }
+    close(c)
 }
 
 func main() {
@@ -151,7 +177,7 @@ func main() {
         fmt.Println(result)
     }
 
-    c3 := make(chan string)
+    /*c3 := make(chan string)
     c4 := make(chan int)
     go goroutine4(c3)
     go goroutine5(c4)
@@ -163,5 +189,31 @@ func main() {
         case msg2 := <-c4:
             fmt.Println("Received from goroutine5:", msg2)
         }
+    }*/
+
+    //c5 := make(map[string]int)
+    c5 := Counter{v: make(map[string]int)}
+    go func() {
+        for i := 0; i < 10; i++ {
+            c5.Inc("key")
+            //c5["key"] += i
+        }
+    }()
+
+    go func() {
+        for i := 0; i < 10; i++ {
+            c5.Inc("key")
+            //c5["key"] += i
+        }
+    }()
+    time.Sleep(1 * time.Second) // Wait for goroutines to finish
+    fmt.Println(c5, c5.Value("key"))
+
+    words := []string{"test1!", "test2!", "test3!", "test4!"}
+    c6 := make(chan string, len(words))
+    go goroutine10(words, c6)
+    for w := range c6 {
+        fmt.Println(w)
     }
+
 }
