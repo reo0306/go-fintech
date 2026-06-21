@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"io"
-	"time"
 	"log"
+	"os"
+	"time"
 )
 
 func hy2(num int) string {
-	if num %2 == 0 {
+	if num%2 == 0 {
 		return "ok"
 	} else {
 		return "ng"
@@ -28,9 +28,9 @@ func main() {
 	}
 
 	num := 9
-	if num %2 == 0 {
+	if num%2 == 0 {
 		fmt.Printf("%d is even\n", num)
-	} else if num %3 == 0 {
+	} else if num%3 == 0 {
 		fmt.Printf("%d is divisible by 3\n", num)
 	} else {
 		fmt.Printf("%d is odd\n", num)
@@ -124,12 +124,12 @@ func main() {
 	fmt.Println("This will be printed first")*/
 
 	/*
-	fmt.Println("This will be printed second")
-	defer fmt.Println("This will be printed last1")
-	defer fmt.Println("This will be printed last2")
-	defer fmt.Println("This will be printed last3")
+		fmt.Println("This will be printed second")
+		defer fmt.Println("This will be printed last1")
+		defer fmt.Println("This will be printed last2")
+		defer fmt.Println("This will be printed last3")
 
-	fmt.Println("This will be printed first")
+		fmt.Println("This will be printed first")
 	*/
 
 	/*file, _ := os.Open("./main.go")
@@ -139,7 +139,6 @@ func main() {
 	data := make([]byte, 100)
 	file.Read(data)
 	fmt.Println(string(data))*/
-
 
 	/*LoggingSettings("./app.log")
 	_, err := os.Open("./test.go")
@@ -180,13 +179,13 @@ func main() {
 		}
 	}
 
-	mm := map[string]int {
-		"apple": 200,
+	mm := map[string]int{
+		"apple":  200,
 		"banana": 300,
 		"grapes": 150,
 		"orange": 80,
 		"papaya": 500,
-		"kiwi": 90,
+		"kiwi":   90,
 	}
 
 	sum2 := 0

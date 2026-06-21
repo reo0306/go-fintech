@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"github.com/markcheno/go-quote"
 	"github.com/markcheno/go-talib"
+	"log"
 )
 
 func main() {

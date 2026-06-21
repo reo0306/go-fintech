@@ -1,24 +1,24 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"time"
+	"io/ioutil"
 	"regexp"
 	"sort"
-	"context"
-	"io/ioutil"
+	"time"
 	//"log"
 	"bytes"
 )
 
-const  (
+const (
 	c1 = iota
 	c2
 	c3
 )
 
 const (
-	_ = iota
+	_      = iota
 	KB int = 1 << (10 * iota)
 	MB
 	GB
@@ -38,7 +38,7 @@ func main() {
 	fmt.Println(t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second())
 
 	// 1回
-    match, _ := regexp.MatchString("a([a-z]+)e", "apple")
+	match, _ := regexp.MatchString("a([a-z]+)e", "apple")
 	fmt.Println(match)
 
 	// 複数
@@ -87,15 +87,15 @@ func main() {
 	//defer cancel()
 	ctx := context.TODO()
 	go longProcess(ctx, ch)
-    //cancel()
+	//cancel()
 
-	CTXLOOP:
+CTXLOOP:
 	for {
 		select {
-		case <- ctx.Done():
+		case <-ctx.Done():
 			fmt.Println(ctx.Err())
 			break CTXLOOP
-		case <- ch:
+		case <-ch:
 			fmt.Println("success")
 			break CTXLOOP
 		}

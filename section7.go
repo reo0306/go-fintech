@@ -7,28 +7,27 @@ import (
 )
 
 func goroutine(s string, wg *sync.WaitGroup) {
-    for i := 0; i < 5; i++ {
-        //time.Sleep(100 * time.Millisecond)
-        fmt.Println(s)
-    }
-    wg.Done()
+	for i := 0; i < 5; i++ {
+		//time.Sleep(100 * time.Millisecond)
+		fmt.Println(s)
+	}
+	wg.Done()
 }
 
-
 func normal(s string) {
-    for i := 0; i < 5; i++ {
-        //time.Sleep(100 * time.Millisecond)
-        fmt.Println(s)
-    }
+	for i := 0; i < 5; i++ {
+		//time.Sleep(100 * time.Millisecond)
+		fmt.Println(s)
+	}
 }
 
 func goroutine1(s []int, c chan int) {
-    sum := 0
-    for _, v := range s {
-        sum += v
-        c <- sum
-    }
-    close(c)
+	sum := 0
+	for _, v := range s {
+		sum += v
+		c <- sum
+	}
+	close(c)
 }
 
 /*func goroutine2(s []int, c chan int) {
@@ -40,38 +39,38 @@ func goroutine1(s []int, c chan int) {
 }*/
 
 func producer(ch chan int, i int) {
-    ch <- i * 2
+	ch <- i * 2
 }
 
 func consumer(ch chan int, wg *sync.WaitGroup) {
-    for i := range ch {
-        func () {
-            defer wg.Done()
-            fmt.Println("processi", i * 1000)
-        }()
-    }
-    fmt.Println("consumer done")
+	for i := range ch {
+		func() {
+			defer wg.Done()
+			fmt.Println("processi", i*1000)
+		}()
+	}
+	fmt.Println("consumer done")
 }
 
 func producer2(first chan int) {
-    defer close(first)
-    for i := 0; i < 10; i++ {
-        first <- i
-    }
+	defer close(first)
+	for i := 0; i < 10; i++ {
+		first <- i
+	}
 }
 
 func multi2(first <-chan int, second chan<- int) {
-    defer close(second)
-    for i := range first {
-        second <- i * 2
-    }
+	defer close(second)
+	for i := range first {
+		second <- i * 2
+	}
 }
 
 func multi4(second <-chan int, third chan<- int) {
-    defer close(third)
-    for i := range second {
-        third <- i * 4
-    }
+	defer close(third)
+	for i := range second {
+		third <- i * 4
+	}
 }
 
 /*func goroutine4(ch chan string) {
@@ -89,131 +88,130 @@ func goroutine5(ch chan int) {
 }*/
 
 type Counter struct {
-    v map[string]int
-    mux sync.Mutex
+	v   map[string]int
+	mux sync.Mutex
 }
 
 func (c *Counter) Inc(key string) {
-    c.mux.Lock()
-    defer c.mux.Unlock()
-    c.v[key]++
+	c.mux.Lock()
+	defer c.mux.Unlock()
+	c.v[key]++
 }
 
 func (c *Counter) Value(key string) int {
-    c.mux.Lock()
-    defer c.mux.Unlock()
-    return c.v[key]
+	c.mux.Lock()
+	defer c.mux.Unlock()
+	return c.v[key]
 }
 
 func goroutine10(words []string, c chan string) {
-    sum := ""
-    for _, v := range words {
-        sum += v
-        c <- sum
-    }
-    close(c)
+	sum := ""
+	for _, v := range words {
+		sum += v
+		c <- sum
+	}
+	close(c)
 }
 
 func main() {
-    var wg sync.WaitGroup
-    wg.Add(1)
-    go goroutine("world", &wg)
-    normal("hello")
-    wg.Wait()
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go goroutine("world", &wg)
+	normal("hello")
+	wg.Wait()
 
-    s := []int{1, 2, 3, 4, 5}
-    c := make(chan int) // 15, 15
-    go goroutine1(s, c)
-    go goroutine1(s, c)
-    x := <-c
-    fmt.Println("sum:", x)
-    y := <-c
-    fmt.Println("sum:", y)
+	s := []int{1, 2, 3, 4, 5}
+	c := make(chan int) // 15, 15
+	go goroutine1(s, c)
+	go goroutine1(s, c)
+	x := <-c
+	fmt.Println("sum:", x)
+	y := <-c
+	fmt.Println("sum:", y)
 
-    ch := make(chan int, 2)
-    ch <- 100
-    fmt.Println(len(ch))
-    ch <- 200
-    fmt.Println(len(ch))
+	ch := make(chan int, 2)
+	ch <- 100
+	fmt.Println(len(ch))
+	ch <- 200
+	fmt.Println(len(ch))
 
+	close(ch) // forの時は、closeが必要
+	for c := range ch {
+		fmt.Println(c)
+	}
 
-    close(ch) // forの時は、closeが必要
-    for c := range ch {
-        fmt.Println(c)
-    }
+	s2 := []int{1, 2, 3, 4, 5}
+	c2 := make(chan int, len(s2))
+	go goroutine1(s2, c2)
 
-    s2 := []int{1, 2, 3, 4, 5}
-    c2 := make(chan int, len(s2))
-    go goroutine1(s2, c2)
+	for i := range c2 {
+		fmt.Println(i)
+	}
 
-    for i := range c2 {
-        fmt.Println(i)
-    }
+	var wg2 sync.WaitGroup
+	ch2 := make(chan int)
 
-    var wg2 sync.WaitGroup
-    ch2 := make(chan int)
-   
-    // Producer
-    for i2 := 0; i2 < 10; i2++ {
-        wg2.Add(1)
-        go producer(ch2, i2)
-    }
+	// Producer
+	for i2 := 0; i2 < 10; i2++ {
+		wg2.Add(1)
+		go producer(ch2, i2)
+	}
 
-    // Consumer
-    go consumer(ch2, &wg2)
-    wg2.Wait()
-    close(ch2)
-    time.Sleep(2 * time.Second) // Ensure consumer finishes before main exits
-    fmt.Println("main done")
+	// Consumer
+	go consumer(ch2, &wg2)
+	wg2.Wait()
+	close(ch2)
+	time.Sleep(2 * time.Second) // Ensure consumer finishes before main exits
+	fmt.Println("main done")
 
-    first := make(chan int) 
-    second := make(chan int) 
-    third := make(chan int) 
+	first := make(chan int)
+	second := make(chan int)
+	third := make(chan int)
 
-    go producer2(first)
-    go multi2(first, second)
-    go multi4(second, third)
-    for result := range third {
-        fmt.Println(result)
-    }
+	go producer2(first)
+	go multi2(first, second)
+	go multi4(second, third)
+	for result := range third {
+		fmt.Println(result)
+	}
 
-    /*c3 := make(chan string)
-    c4 := make(chan int)
-    go goroutine4(c3)
-    go goroutine5(c4)
+	/*c3 := make(chan string)
+	  c4 := make(chan int)
+	  go goroutine4(c3)
+	  go goroutine5(c4)
 
-    for {
-        select {
-        case msg1 := <-c3:
-            fmt.Println("Received from goroutine4:", msg1)
-        case msg2 := <-c4:
-            fmt.Println("Received from goroutine5:", msg2)
-        }
-    }*/
+	  for {
+	      select {
+	      case msg1 := <-c3:
+	          fmt.Println("Received from goroutine4:", msg1)
+	      case msg2 := <-c4:
+	          fmt.Println("Received from goroutine5:", msg2)
+	      }
+	  }*/
 
-    //c5 := make(map[string]int)
-    c5 := Counter{v: make(map[string]int)}
-    go func() {
-        for i := 0; i < 10; i++ {
-            c5.Inc("key")
-            //c5["key"] += i
-        }
-    }()
+	//c5 := make(map[string]int)
+	c5 := Counter{v: make(map[string]int)}
+	go func() {
+		for i := 0; i < 10; i++ {
+			c5.Inc("key")
+			//c5["key"] += i
+		}
+	}()
 
-    go func() {
-        for i := 0; i < 10; i++ {
-            c5.Inc("key")
-            //c5["key"] += i
-        }
-    }()
-    time.Sleep(1 * time.Second) // Wait for goroutines to finish
-    fmt.Println(c5, c5.Value("key"))
+	go func() {
+		for i := 0; i < 10; i++ {
+			c5.Inc("key")
+			//c5["key"] += i
+		}
+	}()
+	time.Sleep(1 * time.Second) // Wait for goroutines to finish
+	fmt.Println(c5, c5.Value("key"))
 
-    words := []string{"test1!", "test2!", "test3!", "test4!"}
-    c6 := make(chan string, len(words))
-    go goroutine10(words, c6)
-    for w := range c6 {
-        fmt.Println(w)
-    }
+	words := []string{"test1!", "test2!", "test3!", "test4!"}
+	c6 := make(chan string, len(words))
+	go goroutine10(words, c6)
+	for w := range c6 {
+		fmt.Println(w)
+	}
 
 }

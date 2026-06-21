@@ -13,14 +13,14 @@ func (v Vertex) Area() int {
 	return v.x * v.y
 }
 
-//　ポインタレシバー
+// 　ポインタレシバー
 func (v *Vertex) Scale(i int) {
 	v.x = v.x * i
 	v.y = v.y * i
 }
 
 //func Area(v Vertex) int {
-	//return v.x * v.y
+//return v.x * v.y
 //}
 
 type Vertex3D struct {
@@ -33,7 +33,7 @@ func (v Vertex3D) Area3D() int {
 	return v.x * v.y * v.z
 }
 
-//　ポインタレシバー
+// 　ポインタレシバー
 func (v *Vertex3D) Scale3D(i int) {
 	v.x = v.x * i
 	v.y = v.y * i
@@ -60,12 +60,13 @@ type Person struct {
 
 type Person2 struct {
 	Name string
-	Age int
+	Age  int
 }
 
 func (p Person2) String() string {
 	return fmt.Sprintf("My Name is %v.", p.Name)
 }
+
 type Dog struct {
 	Name string
 }
@@ -106,9 +107,9 @@ func do(i interface{}) {
 	*/
 	switch v := i.(type) { // switch type文
 	case int:
-		fmt.Printf("The result is %v\n", v * 2)
+		fmt.Printf("The result is %v\n", v*2)
 	case string:
-		fmt.Printf("The result is %v\n", v + " world")
+		fmt.Printf("The result is %v\n", v+" world")
 	default:
 		fmt.Printf("Unknown type: %T\n", v)
 	}
@@ -126,7 +127,7 @@ func myFunc() error {
 	ok := false
 	if ok {
 		return nil
-	} 
+	}
 	return &UserNotFound{Username: "mike"}
 }
 
@@ -141,9 +142,9 @@ func main() {
 	myInt := MyInt(10)
 	fmt.Println(myInt.Double())
 
-    var mike Human = &Person{"Mike"}
-    var x Human = &Person{"X"}
-    //var dog Dog = Dog{"Buddy"}
+	var mike Human = &Person{"Mike"}
+	var x Human = &Person{"X"}
+	//var dog Dog = Dog{"Buddy"}
 	//mike.Say()
 	DriveCar(mike)
 	DriveCar(x)

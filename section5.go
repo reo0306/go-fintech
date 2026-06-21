@@ -6,7 +6,7 @@ import (
 
 type Vertex struct {
 	X, Y int
-	S string
+	S    string
 }
 
 func one(x *int) {
@@ -28,12 +28,12 @@ func main() {
 	fmt.Println(&*&n)
 
 	/*
-	fmt.Println(n)
-	fmt.Println(&n)
+		fmt.Println(n)
+		fmt.Println(&n)
 
-	var p *int = &n
-	fmt.Println(p)
-	fmt.Println(*p)
+		var p *int = &n
+		fmt.Println(p)
+		fmt.Println(*p)
 	*/
 
 	var p *int = new(int)
@@ -42,10 +42,10 @@ func main() {
 	fmt.Println(*p)
 
 	/*
-	var p2 *int
-	fmt.Println(p2)
-	*p2++
-	fmt.Println(p2)
+		var p2 *int
+		fmt.Println(p2)
+		*p2++
+		fmt.Println(p2)
 	*/
 
 	s := make([]int, 0)
@@ -95,5 +95,3 @@ func main() {
 	changeVertex2(v9)
 	fmt.Println(*v9)
 }
-
-
