@@ -6,6 +6,9 @@ import (
 	"regexp"
 	"sort"
 	"context"
+	"io/ioutil"
+	//"log"
+	"bytes"
 )
 
 const  (
@@ -99,4 +102,18 @@ func main() {
 	}
 
 	fmt.Println("###############")
+
+	/*context2, err := ioutil.ReadFile("main.go")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(string(context2))
+
+	if err := ioutil.WriteFile("ioutil_temp.go", context2, 0666); err != nil {
+		log.Fatal(err)
+	}*/
+
+	rr := bytes.NewBuffer([]byte("abc"))
+	context2, _ := ioutil.ReadAll(rr)
+	fmt.Println(string(context2))
 }
