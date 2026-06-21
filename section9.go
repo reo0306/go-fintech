@@ -5,6 +5,7 @@ import (
 	"time"
 	"regexp"
 	"sort"
+	"context"
 )
 
 const  (
@@ -19,6 +20,13 @@ const (
 	MB
 	GB
 )
+
+func longProcess(ctx context.Context, ch chan string) {
+	fmt.Println("run")
+	time.Sleep(2 * time.Second)
+	fmt.Println("finish")
+	ch <- "result"
+}
 
 func main() {
 	t := time.Now()
@@ -69,4 +77,26 @@ func main() {
 
 	fmt.Println(c1, c2, c3)
 	fmt.Println(KB, MB, GB)
+
+	ch := make(chan string)
+	//ctx := context.Background()
+	//ctx, cancel := context.WithTimeout(ctx, 0 * time.Second)
+	//defer cancel()
+	ctx := context.TODO()
+	go longProcess(ctx, ch)
+    //cancel()
+
+	CTXLOOP:
+	for {
+		select {
+		case <- ctx.Done():
+			fmt.Println(ctx.Err())
+			break CTXLOOP
+		case <- ch:
+			fmt.Println("success")
+			break CTXLOOP
+		}
+	}
+
+	fmt.Println("###############")
 }
