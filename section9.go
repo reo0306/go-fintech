@@ -4,6 +4,20 @@ import (
 	"fmt"
 	"time"
 	"regexp"
+	"sort"
+)
+
+const  (
+	c1 = iota
+	c2
+	c3
+)
+
+const (
+	_ = iota
+	KB int = 1 << (10 * iota)
+	MB
+	GB
 )
 
 func main() {
@@ -32,4 +46,27 @@ func main() {
 	fmt.Println(fss, fss[0], fss[1], fss[2])
 	fss = r2.FindStringSubmatch("/save/test")
 	fmt.Println(fss, fss[0], fss[1], fss[2])
+
+	i := []int{5, 3, 2, 6, 7}
+	s := []string{"d", "a", "f"}
+	p := []struct {
+		Name string
+		Age  int
+	}{
+		{"Alice", 30},
+		{"Bob", 25},
+		{"Mike", 40},
+		{"Vera", 45},
+	}
+	fmt.Println(i, s, p)
+
+	sort.Ints(i)
+	fmt.Println(i)
+	sort.Strings(s)
+	sort.Slice(p, func(i, j int) bool { return p[i].Name < p[j].Name })
+	sort.Slice(p, func(i, j int) bool { return p[i].Age < p[j].Age })
+	fmt.Println(i, s, p)
+
+	fmt.Println(c1, c2, c3)
+	fmt.Println(KB, MB, GB)
 }
