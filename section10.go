@@ -7,7 +7,15 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 )
+
+var DB = map[string]string {
+	"User1Key" : "User1Secret",
+	"User2Key" : "User2Secret",
+}
 
 type T struct{}
 
@@ -40,6 +48,14 @@ func (p *Person) UnmarshalJSON(b []byte ) error {
 	})
 	return v, err
 }*/
+
+func Server(apiKey, sign string, data []byte) {
+	apiSecret := DB[apiKey]
+	h := hmac.New(sha256.New, []byte(apiSecret))
+	h.Write(data)
+	expectedHMAC := hex.EncodeToString(h.Sum(nil))
+	fmt.Println(sign == expectedHMAC)
+}
 
 func main() {
 	/*resp, _ := http.Get("http://example.com")
@@ -75,4 +91,16 @@ func main() {
 
 	v, _ := json.Marshal(p)
 	fmt.Println(string(v))
+
+	const apiKey = "User1Key"
+	const apiSecret = "User1Secret"
+
+	data := []byte("data")
+	h := hmac.New(sha256.New, []byte(apiSecret))
+	h.Write(data)
+	sign := hex.EncodeToString(h.Sum(nil))
+
+	fmt.Println(sign)
+
+	Server(apiKey, sign, data)
 }
