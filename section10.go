@@ -2,19 +2,19 @@ package main
 
 import (
 	"bytes"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/hex"
 )
 
-var DB = map[string]string {
-	"User1Key" : "User1Secret",
-	"User2Key" : "User2Secret",
+var DB = map[string]string{
+	"User1Key": "User1Secret",
+	"User2Key": "User2Secret",
 }
 
 type T struct{}
@@ -23,10 +23,10 @@ type Person struct {
 	Name      string   `json:"name"`
 	Age       int      `json:"age,omitempty"`
 	Nicknames []string `json:"nicknames,omitempty"`
-	T *T `json:"T,omitempty"`
+	T         *T       `json:"T,omitempty"`
 }
 
-func (p *Person) UnmarshalJSON(b []byte ) error {
+func (p *Person) UnmarshalJSON(b []byte) error {
 	type Person2 struct {
 		Name string
 	}
