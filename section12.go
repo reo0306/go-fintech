@@ -1,9 +1,9 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
-	"database/sql"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -12,7 +12,7 @@ var DbConnection *sql.DB
 
 type Person struct {
 	Name string
-	Age int
+	Age  int
 }
 
 func main() {

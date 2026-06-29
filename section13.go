@@ -2,19 +2,19 @@ package main
 
 import (
 	//"fmt"
-	"log"
-	"regexp"
-	"io/ioutil"
-	"net/http"
 	"html/template"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"regexp"
 )
 
 type Page struct {
 	Title string
-	Body []byte
+	Body  []byte
 }
 
-func (p * Page) save() error {
+func (p *Page) save() error {
 	filename := p.Title + ".txt"
 	return ioutil.WriteFile(filename, p.Body, 0600)
 }
@@ -31,7 +31,7 @@ func loadPage(title string) (*Page, error) {
 var templates = template.Must(template.ParseFiles("edit.html", "view.html"))
 
 func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
-	err := templates.ExecuteTemplate(w, tmpl + ".html", p)
+	err := templates.ExecuteTemplate(w, tmpl+".html", p)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -52,13 +52,13 @@ func editHandler(w http.ResponseWriter, r *http.Request, title string) {
 
 func saveHandler(w http.ResponseWriter, r *http.Request, title string) {
 	body := r.FormValue("body")
-	p := &Page{Title:title, Body: []byte(body)}
+	p := &Page{Title: title, Body: []byte(body)}
 	err := p.save()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	http.Redirect(w, r, "/view/" + title, http.StatusFound)
+	http.Redirect(w, r, "/view/"+title, http.StatusFound)
 
 }
 
